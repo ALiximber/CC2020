@@ -180,3 +180,4 @@ export function printAnalysisReport(): void {
     window.print();
   }
 }
+

@@ -288,3 +288,4 @@ export function CategoryBarChart({ categories }: CategoryBarChartProps) {
     </section>
   );
 }
+

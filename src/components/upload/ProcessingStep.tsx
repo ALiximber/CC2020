@@ -119,3 +119,4 @@ export function ProcessingStep({ stage, batchInfo, onCancel }: ProcessingStepPro
     </div>
   );
 }
+

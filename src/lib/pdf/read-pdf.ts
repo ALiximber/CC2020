@@ -63,9 +63,10 @@ async function renderPageToJpeg(page: import("pdfjs-dist").PDFPageProxy, maxDim:
 export async function readPdf(file: File): Promise<PdfReadResult> {
   const pdfjs = await loadPdfJs();
   const data = new Uint8Array(await file.arrayBuffer());
+  const loadingTask = pdfjs.getDocument({ data });
   let doc: import("pdfjs-dist").PDFDocumentProxy;
   try {
-    doc = await pdfjs.getDocument({ data, isEvalSupported: false }).promise;
+    doc = await loadingTask.promise;
   } catch (e) {
     const name = (e as { name?: string })?.name;
     if (name === "PasswordException") throw new PdfReadError("encrypted", "El PDF está protegido con contraseña.");
@@ -112,7 +113,7 @@ export async function readPdf(file: File): Promise<PdfReadResult> {
     }
     return { text, pageCount, isScanned, images, preview, truncated };
   } finally {
-    await doc.destroy();
+    await loadingTask.destroy();
   }
 }
 

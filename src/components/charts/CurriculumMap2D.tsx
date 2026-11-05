@@ -499,3 +499,4 @@ export function CurriculumMap2D({
     </section>
   );
 }
+
