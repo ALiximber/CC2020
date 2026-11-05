@@ -4,9 +4,7 @@ import { useRef, useState } from "react";
 import { getCategory } from "@/data/cc2020-areas";
 import { getDiscipline } from "@/data/cc2020-reference";
 import { ComparisonView } from "@/components/comparison/ComparisonView";
-import { Footer } from "@/components/layout/Footer";
 import { Header, type FlowStep } from "@/components/layout/Header";
-import { HeroHome } from "@/components/layout/HeroHome";
 import { ResultsDashboard } from "@/components/results/ResultsDashboard";
 import { ProcessingStep, type ProcessingStage } from "@/components/upload/ProcessingStep";
 import { ReviewStep } from "@/components/upload/ReviewStep";
@@ -35,7 +33,7 @@ export default function HomePage() {
     clearAll,
   } = useSessionAnalyses();
 
-  const [step, setStep] = useState<FlowStep>("home");
+  const [step, setStep] = useState<FlowStep>("upload");
   const [draftCurriculum, setDraftCurriculum] = useState<Curriculum | null>(null);
   const [editingAnalysisId, setEditingAnalysisId] = useState<string | null>(null);
   const [processingStage, setProcessingStage] = useState<ProcessingStage>("extracting");
@@ -49,12 +47,11 @@ export default function HomePage() {
     abortRef.current?.abort();
     abortRef.current = null;
     inFlightRef.current = false;
-    setStep(draftCurriculum ? "review" : "upload");
+    setStep(processingStage === "extracting" ? "upload" : "review");
   }
 
   async function handleExtractFromFile(
     request: ExtractRequest,
-    metaOverrides: { careerName: string; university: string; planYear: string },
   ) {
     if (inFlightRef.current) return;
     inFlightRef.current = true;
@@ -69,9 +66,9 @@ export default function HomePage() {
     try {
       const extracted = await extractCurriculum(request, controller.signal);
       const curriculum: Curriculum = {
-        careerName: metaOverrides.careerName || extracted.careerName || "Carrera universitaria",
-        university: metaOverrides.university || extracted.university || "",
-        planYear: metaOverrides.planYear || extracted.planYear || "",
+        careerName: extracted.careerName || "Carrera universitaria",
+        university: extracted.university || "",
+        planYear: extracted.planYear || "",
         source: request.source,
         documentQuality: extracted.documentQuality,
         subjects: extracted.subjects.map((s) => ({
@@ -95,8 +92,10 @@ export default function HomePage() {
       setErrorMessage(msg);
       setStep("upload");
     } finally {
-      inFlightRef.current = false;
-      abortRef.current = null;
+      if (abortRef.current === controller) {
+        inFlightRef.current = false;
+        abortRef.current = null;
+      }
     }
   }
 
@@ -162,6 +161,7 @@ export default function HomePage() {
         // Si falla la redacción opcional con IA, se usa el resumen determinista local.
       }
 
+      if (controller.signal.aborted) return;
       const stored: StoredAnalysis = {
         id: editingAnalysisId ?? newId("career"),
         createdAt: new Date().toISOString(),
@@ -183,8 +183,10 @@ export default function HomePage() {
       setErrorMessage(msg);
       setStep("review");
     } finally {
-      inFlightRef.current = false;
-      abortRef.current = null;
+      if (abortRef.current === controller) {
+        inFlightRef.current = false;
+        abortRef.current = null;
+      }
     }
   }
 
@@ -207,7 +209,7 @@ export default function HomePage() {
     setDraftCurriculum(null);
     setEditingAnalysisId(null);
     setErrorMessage(null);
-    setStep("home");
+    setStep("upload");
   }
 
   return (
@@ -215,40 +217,21 @@ export default function HomePage() {
       <Header
         currentStep={step}
         analysesCount={analyses.length}
-        onGoHome={() => setStep("home")}
-        onStartUpload={() => {
-          setErrorMessage(null);
-          setDraftCurriculum(null);
-          setEditingAnalysisId(null);
-          setStep("upload");
-        }}
+        onGoHome={() => setStep("upload")}
         onOpenCompare={() => setStep("compare")}
-        onResetAll={handleResetAll}
       />
 
       <main className="flex-1">
-        {step === "home" && (
-          <HeroHome
-            onStartAnalyze={() => {
-              setErrorMessage(null);
-              setDraftCurriculum(null);
-              setEditingAnalysisId(null);
-              setStep("upload");
-            }}
-            onStartDemo={handleStartDemo}
-            hasExistingAnalyses={analyses.length > 0}
-            onContinueExisting={() => setStep("results")}
-          />
-        )}
-
-        {step === "upload" && (
+        {(step === "upload" || (step === "processing" && processingStage === "extracting")) && (
+          <div hidden={step !== "upload"}>
           <UploadStep
             onExtractWithAi={handleExtractFromFile}
             onManualReady={handleManualReady}
             onTryDemo={handleStartDemo}
-            onBack={() => setStep(analyses.length > 0 ? "results" : "home")}
+
             errorMessage={errorMessage}
           />
+          </div>
         )}
 
         {step === "review" && draftCurriculum && (
@@ -306,12 +289,12 @@ export default function HomePage() {
               setStep("results");
             }}
             onRemoveCareer={removeAnalysis}
-            onBackToResults={() => setStep(activeAnalysis ? "results" : "home")}
+            onBackToResults={() => setStep(activeAnalysis ? "results" : "upload")}
           />
         )}
       </main>
 
-      <Footer />
+
     </div>
   );
 }

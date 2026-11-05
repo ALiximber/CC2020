@@ -83,7 +83,7 @@ export function CurriculumMap2D({
         "Este punto resume hacia dónde se inclina el contenido de computación de tu plan de estudios según las 6 categorías del CC2020.",
       point: careerPoint,
       shares: careerShares,
-      color: "#1d4ed8",
+      color: "#83afff",
       kind: "career",
     };
 
@@ -114,17 +114,17 @@ export function CurriculumMap2D({
   return (
     <section
       aria-labelledby="heading-map-2d"
-      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs sm:p-8"
+      className="rounded-2xl border border-line bg-surface p-6 shadow-xs sm:p-8"
     >
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
+          <span className="text-xs font-bold uppercase tracking-wider text-accent">
             Inspirado en la Figura 2.2 del CC2020
           </span>
-          <h2 id="heading-map-2d" className="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">
+          <h2 id="heading-map-2d" className="mt-1 text-xl font-bold text-ink sm:text-2xl">
             Mapa curricular bidimensional
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-muted">
             Visualiza dónde se ubica tu carrera frente a las seis disciplinas de referencia, desde el hardware y los fundamentos hasta los sistemas y las necesidades organizacionales.
           </p>
         </div>
@@ -133,9 +133,9 @@ export function CurriculumMap2D({
       {/* Aviso obligatorio visible */}
       <div
         role="note"
-        className="mt-4 flex items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50/80 px-4 py-3 text-xs text-amber-950"
+        className="mt-4 flex items-start gap-2.5 rounded-xl border border-line bg-tint/80 px-4 py-3 text-xs text-warning"
       >
-        <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" aria-hidden="true" />
+        <AlertTriangle className="h-4 w-4 shrink-0 text-warning mt-0.5" aria-hidden="true" />
         <p className="font-medium">
           Este mapa es una representación estimada basada en el CC2020 y no una clasificación espacial oficial.
         </p>
@@ -144,7 +144,7 @@ export function CurriculumMap2D({
       <div className="mt-6 grid gap-6 lg:grid-cols-12">
         {/* Lienzo SVG interactivo */}
         <div className="lg:col-span-8">
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white p-2 sm:p-4">
+          <div className="overflow-hidden rounded-2xl border border-line bg-gradient-to-b from-canvas to-surface p-2 sm:p-4">
             <svg
               viewBox="0 0 700 420"
               role="img"
@@ -165,8 +165,8 @@ export function CurriculumMap2D({
                 width="520"
                 height="300"
                 rx="16"
-                fill="#f8fafc"
-                stroke="#cbd5e1"
+                fill="#191e26"
+                stroke="#586574"
                 strokeWidth="1.5"
               />
 
@@ -176,12 +176,12 @@ export function CurriculumMap2D({
                 cy="275"
                 rx="110"
                 ry="68"
-                fill="#fee2e2"
+                fill="#412c35"
                 fillOpacity="0.45"
                 stroke="#fca5a5"
                 strokeDasharray="4 4"
               />
-              <text x="165" y="325" fontSize="10" fontWeight="600" fill="#b91c1c">
+              <text x="165" y="325" fontSize="10" fontWeight="600" fill="#f2a9ac">
                 Enfoque en Hardware
               </text>
 
@@ -190,12 +190,12 @@ export function CurriculumMap2D({
                 cy="240"
                 rx="125"
                 ry="82"
-                fill="#d1fae5"
+                fill="#213d38"
                 fillOpacity="0.4"
                 stroke="#6ee7b7"
                 strokeDasharray="4 4"
               />
-              <text x="350" y="308" textAnchor="middle" fontSize="10" fontWeight="600" fill="#047857">
+              <text x="350" y="308" textAnchor="middle" fontSize="10" fontWeight="600" fill="#8ed9bf">
                 Software y Fundamentos
               </text>
 
@@ -204,12 +204,12 @@ export function CurriculumMap2D({
                 cy="185"
                 rx="125"
                 ry="68"
-                fill="#dbeafe"
+                fill="#23374a"
                 fillOpacity="0.4"
                 stroke="#93c5fd"
                 strokeDasharray="4 4"
               />
-              <text x="245" y="138" fontSize="10" fontWeight="600" fill="#1d4ed8">
+              <text x="245" y="138" fontSize="10" fontWeight="600" fill="#83afff">
                 Sistemas e Infraestructura
               </text>
 
@@ -218,12 +218,12 @@ export function CurriculumMap2D({
                 cy="145"
                 rx="115"
                 ry="68"
-                fill="#ede9fe"
+                fill="#363248"
                 fillOpacity="0.45"
                 stroke="#c4b5fd"
                 strokeDasharray="4 4"
               />
-              <text x="480" y="102" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6d28d9">
+              <text x="480" y="102" textAnchor="middle" fontSize="10" fontWeight="600" fill="#d0b5ff">
                 Organizaciones y Datos
               </text>
 
@@ -233,7 +233,7 @@ export function CurriculumMap2D({
                 y1="210"
                 x2="610"
                 y2="210"
-                stroke="#cbd5e1"
+                stroke="#586574"
                 strokeDasharray="3 3"
               />
               <line
@@ -241,12 +241,12 @@ export function CurriculumMap2D({
                 y1="60"
                 x2="350"
                 y2="360"
-                stroke="#cbd5e1"
+                stroke="#586574"
                 strokeDasharray="3 3"
               />
 
               {/* Etiquetas del eje vertical (izquierda): niveles de la Figura 2.2 */}
-              <g fontSize="10.5" fontWeight="700" fill="#334155" textAnchor="end">
+              <g fontSize="10.5" fontWeight="700" fill="#cad4e1" textAnchor="end">
                 <text x="80" y="105">Actividad en</text>
                 <text x="80" y="118">organizaciones</text>
 
@@ -258,7 +258,7 @@ export function CurriculumMap2D({
               </g>
 
               {/* Etiquetas del eje horizontal (abajo): Hardware → Software → Necesidades organizacionales */}
-              <g fontSize="11" fontWeight="700" fill="#334155">
+              <g fontSize="11" fontWeight="700" fill="#cad4e1">
                 <text x="155" y="385" textAnchor="middle">
                   ← Hardware
                 </text>
@@ -271,7 +271,7 @@ export function CurriculumMap2D({
               </g>
 
               {/* Título superior dentro del lienzo */}
-              <text x="350" y="38" textAnchor="middle" fontSize="12" fontWeight="700" fill="#0f172a">
+              <text x="350" y="38" textAnchor="middle" fontSize="12" fontWeight="700" fill="#dce3ed">
                 Panorama de las disciplinas de computación y ubicación de tu carrera
               </text>
 
@@ -297,7 +297,7 @@ export function CurriculumMap2D({
                         cy={cy}
                         r={isCareer ? 18 : 15}
                         fill="none"
-                        stroke="#0f172a"
+                        stroke="#dce3ed"
                         strokeWidth="2"
                         strokeDasharray="3 2"
                       />
@@ -327,7 +327,7 @@ export function CurriculumMap2D({
                         textAnchor="middle"
                         fontSize={isCareer ? "9.5" : "10"}
                         fontWeight="800"
-                        fill={isCareer ? "#ffffff" : "#0f172a"}
+                        fill={isCareer ? "#ffffff" : "#171b21"}
                       >
                         {node.shortLabel}
                       </text>
@@ -338,8 +338,8 @@ export function CurriculumMap2D({
             </svg>
 
             {/* Botones accesibles por teclado y pantalla táctil para seleccionar cualquier punto */}
-            <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-slate-200/80 pt-3">
-              <span className="mr-1 text-xs font-semibold text-slate-500">
+            <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-line/80 pt-3">
+              <span className="mr-1 text-xs font-semibold text-muted">
                 Seleccionar punto:
               </span>
               {nodes.map((node) => {
@@ -352,8 +352,8 @@ export function CurriculumMap2D({
                     aria-pressed={active}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
                       active
-                        ? "bg-slate-900 text-white shadow-2xs"
-                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                        ? "bg-strong text-white shadow-2xs"
+                        : "bg-raised text-muted hover:bg-raised"
                     }`}
                   >
                     <span
@@ -370,7 +370,7 @@ export function CurriculumMap2D({
         </div>
 
         {/* Panel lateral con explicación del punto seleccionado */}
-        <div className="lg:col-span-4 flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-5">
+        <div className="lg:col-span-4 flex flex-col justify-between rounded-2xl border border-line bg-canvas p-5">
           <div>
             <div className="flex items-center gap-2">
               <span
@@ -380,24 +380,24 @@ export function CurriculumMap2D({
                 <Compass className="h-4 w-4" aria-hidden="true" />
               </span>
               <div>
-                <span className="block text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                <span className="block text-[11px] font-semibold uppercase tracking-wider text-muted">
                   {selectedNode.subtitle}
                 </span>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-bold text-ink">
                   {selectedNode.title}
                 </h3>
               </div>
             </div>
 
-            <p className="mt-3 text-xs leading-relaxed text-slate-700">
+            <p className="mt-3 text-xs leading-relaxed text-muted">
               {selectedNode.description}
             </p>
 
-            <div className="mt-4 rounded-xl border border-slate-200 bg-white p-3.5 text-xs">
-              <p className="font-bold text-slate-800">
+            <div className="mt-4 rounded-xl border border-line bg-surface p-3.5 text-xs">
+              <p className="font-bold text-ink">
                 ¿Por qué se ubica en esta zona del mapa?
               </p>
-              <p className="mt-1 text-slate-600 leading-relaxed">
+              <p className="mt-1 text-muted leading-relaxed">
                 {selectedNode.point.x < -0.15
                   ? "En el eje horizontal se inclina hacia la izquierda por su peso en hardware, electrónica o arquitectura."
                   : selectedNode.point.x > 0.15
@@ -410,13 +410,13 @@ export function CurriculumMap2D({
                     : "En el eje vertical se sitúa en la franja media de desarrollo tecnológico y sistemas aplicados."}
               </p>
 
-              <div className="mt-3 border-t border-slate-100 pt-2.5">
-                <p className="font-semibold text-slate-800">Categorías con mayor peso:</p>
+              <div className="mt-3 border-t border-line pt-2.5">
+                <p className="font-semibold text-ink">Categorías con mayor peso:</p>
                 <ul className="mt-1.5 space-y-1">
                   {topCategoriesOfSelected.map(({ cat, share }) => {
                     const meta = getCategory(cat);
                     return (
-                      <li key={cat} className="flex items-center justify-between text-slate-700">
+                      <li key={cat} className="flex items-center justify-between text-muted">
                         <span>{meta.nameEs}</span>
                         <span className="font-bold">{Math.round(share * 100)}%</span>
                       </li>
@@ -425,15 +425,15 @@ export function CurriculumMap2D({
                 </ul>
               </div>
 
-              <p className="mt-3 border-t border-slate-100 pt-2 font-mono text-[11px] text-slate-500">
+              <p className="mt-3 border-t border-line pt-2 font-mono text-[11px] text-muted">
                 Coordenadas estimadas: x = {selectedNode.point.x.toFixed(2)}, y ={" "}
                 {selectedNode.point.y.toFixed(2)}
               </p>
             </div>
           </div>
 
-          <div className="mt-4 flex items-start gap-2 rounded-xl bg-blue-50/80 border border-blue-100 p-3 text-[11px] text-blue-950">
-            <Info className="h-4 w-4 shrink-0 text-blue-600 mt-0.5" aria-hidden="true" />
+          <div className="mt-4 flex items-start gap-2 rounded-xl bg-tint/80 border border-line p-3 text-[11px] text-accent">
+            <Info className="h-4 w-4 shrink-0 text-accent mt-0.5" aria-hidden="true" />
             <span>
               Tanto las 6 disciplinas del CC2020 como tu carrera se ubican aplicando exactamente la misma fórmula matemática a sus perfiles de las 34 áreas.
             </span>
@@ -442,11 +442,11 @@ export function CurriculumMap2D({
       </div>
 
       {/* Documentación transparente de la transformación matemática */}
-      <div className="mt-5 border-t border-slate-100 pt-4">
+      <div className="mt-5 border-t border-line pt-4">
         <button
           type="button"
           onClick={() => setShowMethodDetails((v) => !v)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 hover:text-blue-900"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:text-accent"
         >
           {showMethodDetails ? (
             <>
@@ -462,31 +462,31 @@ export function CurriculumMap2D({
         </button>
 
         {showMethodDetails && (
-          <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700 space-y-3">
+          <div className="mt-3 rounded-xl border border-line bg-canvas p-4 text-xs text-muted space-y-3">
             <p>
-              La Figura 2.2 del reporte CC2020 es un diagrama conceptual y no incluye una fórmula oficial para proyectar nuevas carreras. Para construir un mapa transparente y reproducible, asignamos a cada una de las 6 categorías una coordenada ancla <code className="rounded bg-white px-1">(ax, ay)</code> en <code className="rounded bg-white px-1">[-1, 1]²</code> y calculamos el promedio ponderado por la proporción <code className="rounded bg-white px-1">p_c</code> de cada categoría: <code className="rounded bg-white px-1">x = Σ p_c · ax_c</code>, <code className="rounded bg-white px-1">y = Σ p_c · ay_c</code>.
+              La Figura 2.2 del reporte CC2020 es un diagrama conceptual y no incluye una fórmula oficial para proyectar nuevas carreras. Para construir un mapa transparente y reproducible, asignamos a cada una de las 6 categorías una coordenada ancla <code className="rounded bg-surface px-1">(ax, ay)</code> en <code className="rounded bg-surface px-1">[-1, 1]²</code> y calculamos el promedio ponderado por la proporción <code className="rounded bg-surface px-1">p_c</code> de cada categoría: <code className="rounded bg-surface px-1">x = Σ p_c · ax_c</code>, <code className="rounded bg-surface px-1">y = Σ p_c · ay_c</code>.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-slate-600">
+                  <tr className="border-b border-line text-muted">
                     <th className="py-1.5 pr-3">Categoría CC2020</th>
                     <th className="py-1.5 pr-3">Ancla X</th>
                     <th className="py-1.5 pr-3">Ancla Y</th>
                     <th className="py-1.5">Justificación conceptual</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200/60">
+                <tbody className="divide-y divide-line/60">
                   {CC2020_CATEGORIES.map((c) => {
                     const anchor = CATEGORY_ANCHORS[c.id];
                     return (
                       <tr key={c.id}>
-                        <td className="py-1.5 pr-3 font-medium text-slate-900">
+                        <td className="py-1.5 pr-3 font-medium text-ink">
                           {c.nameEs} ({c.nameEn})
                         </td>
                         <td className="py-1.5 pr-3 font-mono">{anchor.x}</td>
                         <td className="py-1.5 pr-3 font-mono">{anchor.y}</td>
-                        <td className="py-1.5 text-slate-600">{anchor.reason}</td>
+                        <td className="py-1.5 text-muted">{anchor.reason}</td>
                       </tr>
                     );
                   })}

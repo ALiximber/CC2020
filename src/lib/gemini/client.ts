@@ -35,9 +35,12 @@ export function toAppError(err: unknown): AppError {
     const msg = err.message ?? "";
     switch (err.status) {
       case 400:
+
         if (/api key|API_KEY/i.test(msg)) return new AppError("AUTH", msg);
         if (/too large|exceeds|token/i.test(msg)) return new AppError("TOO_LARGE", msg);
         return new AppError("BAD_REQUEST", msg);
+
+    
       case 401:
       case 403:
         return new AppError("AUTH", msg);

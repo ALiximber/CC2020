@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   AlertTriangle,
   Award,
@@ -41,6 +41,10 @@ import { CurriculumMap2D } from "@/components/charts/CurriculumMap2D";
 import { TraceabilitySection } from "@/components/results/TraceabilitySection";
 import type { StoredAnalysis } from "@/types";
 
+import { ViewSelector } from "@/components/layout/ViewSelector";
+
+const views = ["Resumen", "Categorías", "Disciplinas", "Mapa", "Materias"] as const;
+
 interface ResultsDashboardProps {
   stored: StoredAnalysis;
   allAnalyses: StoredAnalysis[];
@@ -60,6 +64,7 @@ export function ResultsDashboard({
   onOpenCompare,
   onResetAll,
 }: ResultsDashboardProps) {
+  const [view, setView] = useState<(typeof views)[number]>(views[0]);
   const result = useMemo(
     () => computeAnalysis(stored.curriculum, stored.classifications),
     [stored.curriculum, stored.classifications],
@@ -80,48 +85,24 @@ export function ResultsDashboard({
 
   const confidenceBadgeStyle =
     result.confidence.level === "suficiente"
-      ? "bg-emerald-100 text-emerald-900 border-emerald-300"
+      ? "bg-tint text-success border-line"
       : result.confidence.level === "parcial"
-        ? "bg-amber-100 text-amber-900 border-amber-300"
-        : "bg-red-100 text-red-900 border-red-300";
+        ? "bg-tint text-warning border-line"
+        : "bg-tint text-danger border-line";
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 space-y-8">
       {/* Banner si se trata de la demostración interactiva */}
       {stored.isDemo && (
-        <div
-          role="region"
-          aria-label="Aviso de modo demostración"
-          className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border-2 border-indigo-300 bg-indigo-50/90 p-5 text-indigo-950 shadow-xs print:border-slate-300"
-        >
-          <div className="flex items-start gap-3">
-            <Sparkles className="h-6 w-6 shrink-0 text-indigo-600 mt-0.5" aria-hidden="true" />
-            <div>
-              <p className="text-sm font-bold uppercase tracking-wide text-indigo-800">
-                Modo de demostración (datos ficticios de ejemplo)
-              </p>
-              <p className="mt-0.5 text-sm text-indigo-900">
-                Estás explorando una retícula de ejemplo creada para mostrar cómo funcionan las gráficas y los cálculos sin usar la API. Puedes analizar una carrera real cuando quieras.
-              </p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={onStartNewAnalysis}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-indigo-700 print:hidden"
-          >
-            <PlusCircle className="h-4 w-4" aria-hidden="true" />
-            Subir una retícula real
-          </button>
-        </div>
+        <p className="text-sm text-muted">Demostración · Retícula de ejemplo</p>
       )}
 
       {/* Barra superior: selector de carreras en sesión, exportación y acciones */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-5 shadow-xs lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-1">
           {allAnalyses.length > 1 && (
             <div className="flex flex-wrap items-center gap-2 pb-2 print:hidden">
-              <span className="text-xs font-semibold text-slate-500">Carreras en tu sesión:</span>
+              <span className="text-xs font-semibold text-muted">Carreras en tu sesión:</span>
               {allAnalyses.map((item) => (
                 <button
                   key={item.id}
@@ -129,8 +110,8 @@ export function ResultsDashboard({
                   onClick={() => onSelectAnalysis(item.id)}
                   className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
                     item.id === stored.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      ? "bg-action text-white"
+                      : "bg-raised text-muted hover:bg-raised"
                   }`}
                 >
                   {item.curriculum.careerName || "Carrera"}
@@ -139,10 +120,10 @@ export function ResultsDashboard({
             </div>
           )}
 
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
             {stored.curriculum.careerName || "Carrera analizada"}
           </h1>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-muted">
             {stored.curriculum.university || "Universidad no especificada"}
             {stored.curriculum.planYear ? ` · Plan ${stored.curriculum.planYear}` : ""}
             {` · ${stored.curriculum.subjects.length} materias`}
@@ -153,85 +134,88 @@ export function ResultsDashboard({
           <button
             type="button"
             onClick={onEditSubjects}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface px-3 py-2 text-xs font-semibold text-muted hover:bg-canvas"
           >
-            <Edit3 className="h-3.5 w-3.5 text-slate-600" aria-hidden="true" />
+            <Edit3 className="h-3.5 w-3.5 text-muted" aria-hidden="true" />
             Editar materias
           </button>
 
           <button
             type="button"
             onClick={onStartNewAnalysis}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-tint px-3 py-2 text-xs font-semibold text-accent hover:bg-tint"
           >
-            <PlusCircle className="h-3.5 w-3.5 text-blue-600" aria-hidden="true" />
+            <PlusCircle className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             Analizar otra carrera
           </button>
 
           <button
             type="button"
             onClick={onOpenCompare}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-blue-700"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-action px-3.5 py-2 text-xs font-semibold text-white shadow-2xs hover:bg-action"
           >
             <GitCompare className="h-3.5 w-3.5" aria-hidden="true" />
             Comparar carreras
           </button>
 
-          <div className="h-5 w-px bg-slate-200 mx-0.5 hidden sm:block" aria-hidden="true" />
+          <details className="result-tools"><summary>Más opciones</summary><div>
 
           <button
             type="button"
             onClick={() => downloadAnalysisJson(stored, result)}
-            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-2.5 py-2 text-xs font-medium text-muted hover:bg-canvas"
             title="Descargar resultados en formato JSON"
           >
-            <Download className="h-3.5 w-3.5 text-slate-500" aria-hidden="true" />
+            <Download className="h-3.5 w-3.5 text-muted" aria-hidden="true" />
             JSON
           </button>
 
           <button
             type="button"
             onClick={() => downloadAnalysisCsv(stored, result)}
-            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-2.5 py-2 text-xs font-medium text-muted hover:bg-canvas"
             title="Descargar tabla en formato CSV para Excel"
           >
-            <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
+            <FileSpreadsheet className="h-3.5 w-3.5 text-success" aria-hidden="true" />
             CSV
           </button>
 
           <button
             type="button"
             onClick={printAnalysisReport}
-            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-2.5 py-2 text-xs font-medium text-muted hover:bg-canvas"
             title="Imprimir o guardar como PDF"
           >
-            <Printer className="h-3.5 w-3.5 text-blue-600" aria-hidden="true" />
+            <Printer className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
             Imprimir / PDF
           </button>
 
           <button
             type="button"
             onClick={onResetAll}
-            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-medium text-slate-500 hover:bg-red-50 hover:text-red-700"
+            className="inline-flex items-center gap-1 rounded-xl border border-line bg-surface px-2.5 py-2 text-xs font-medium text-muted hover:bg-tint hover:text-danger"
             title="Reiniciar y comenzar un análisis nuevo desde cero"
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            Nuevo
+            Borrar análisis de la sesión
           </button>
+          </div></details>
         </div>
       </div>
 
+      <ViewSelector label="Vistas del análisis" options={views} value={view} onChange={setView} />
+      <div className={view === "Resumen" ? "space-y-5" : "hidden print:block"}>
       {/* SECCIÓN A: Resumen general ("Así es tu carrera") + Calidad del análisis */}
       <section
         aria-labelledby="heading-summary"
-        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs sm:p-8"
+        className="rounded-2xl border border-line bg-surface p-6 shadow-xs sm:p-8"
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
               Resumen general
             </span>
-            <h2 id="heading-summary" className="mt-1 text-2xl font-bold text-slate-900">
+            <h2 id="heading-summary" className="mt-1 text-2xl font-bold text-ink">
               Así es tu carrera
             </h2>
           </div>
@@ -244,72 +228,73 @@ export function ResultsDashboard({
           </span>
         </div>
 
-        <p className="mt-4 text-base leading-relaxed text-slate-800 bg-gradient-to-r from-blue-50/80 to-indigo-50/50 border border-blue-100 rounded-xl p-4 sm:p-5">
+        <p className="mt-4 text-base leading-relaxed text-ink bg-gradient-to-r from-tint to-surface border border-line rounded-xl p-4 sm:p-5">
           {summaryText}
         </p>
 
         {/* Tarjetas resumen de hallazgos principales */}
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-            <span className="text-xs font-semibold text-slate-500">Categoría predominante</span>
+          <div className="rounded-xl border border-line bg-canvas/70 p-4">
+            <span className="text-xs font-semibold text-muted">Mayor proporción del contenido de computación</span>
             {mainCategory && ranked[0] ? (
               <>
-                <p className="mt-1 text-lg font-bold text-slate-900">
+                <p className="mt-1 text-lg font-bold text-ink">
                   {mainCategory.nameEs} ({Math.round(ranked[0].share * 100)}%)
                 </p>
-                <p className="mt-1 text-xs text-slate-600">{mainCategory.examplesEs}</p>
+                <p className="mt-1 text-xs text-muted">{mainCategory.examplesEs}</p>
               </>
             ) : (
-              <p className="mt-1 text-sm text-slate-500">Sin datos</p>
+              <p className="mt-1 text-sm text-muted">Sin datos</p>
             )}
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-            <span className="text-xs font-semibold text-slate-500">
+          <div className="rounded-xl border border-line bg-canvas/70 p-4">
+            <span className="text-xs font-semibold text-muted">
               Disciplina de referencia más cercana
             </span>
             {topDiscipline && topSimilarity ? (
               <>
-                <p className="mt-1 text-lg font-bold text-slate-900">
+                <p className="mt-1 text-lg font-bold text-ink">
                   {topDiscipline.nameEs} ({topDiscipline.id})
                 </p>
-                <p className="mt-1 text-xs text-slate-600">
-                  Índice de semejanza calculado: <strong>{topSimilarity.index}/100</strong>
+                <p className="mt-1 text-xs text-muted">
+                  Semejanza de perfiles (100 = máxima): <strong>{topSimilarity.index}/100</strong>
                 </p>
               </>
             ) : (
-              <p className="mt-1 text-sm text-slate-500">Sin datos</p>
+              <p className="mt-1 text-sm text-muted">Sin datos</p>
             )}
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
-            <span className="text-xs font-semibold text-slate-500">Cálculo y ponderación</span>
-            <p className="mt-1 text-lg font-bold text-slate-900 capitalize">
+          <div className="rounded-xl border border-line bg-canvas/70 p-4">
+            <span className="text-xs font-semibold text-muted">Cálculo y ponderación</span>
+            <p className="mt-1 text-lg font-bold text-ink capitalize">
               {WEIGHTING_LABELS[result.weighting]}
             </p>
-            <p className="mt-1 text-xs text-slate-600">
+            <p className="mt-1 text-xs text-muted">
               {Math.round(result.classifiedFraction * 100)}% del plan corresponde a áreas de computación del CC2020.
             </p>
           </div>
         </div>
 
+        <details className="disclosure"><summary>Ver áreas, materias y respaldo documental</summary>
         {/* Áreas específicas y materias con mayor peso */}
         <div className="mt-5 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 p-4">
-            <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
-              <Layers className="h-4 w-4 text-blue-600" aria-hidden="true" />
+          <div className="rounded-xl border border-line p-4">
+            <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted">
+              <Layers className="h-4 w-4 text-accent" aria-hidden="true" />
               Las 5 áreas específicas del CC2020 con mayor presencia
             </h3>
             <ul className="mt-2.5 space-y-1.5 text-xs">
               {mainAreas.map((a) => {
                 const area = getArea(a.areaId)!;
                 return (
-                  <li key={a.areaId} className="flex items-center justify-between gap-2 text-slate-700">
+                  <li key={a.areaId} className="flex items-center justify-between gap-2 text-muted">
                     <span>
-                      <strong className="font-mono text-slate-900">{a.areaId}</strong>{" "}
+                      <strong className="font-mono text-ink">{a.areaId}</strong>{" "}
                       {area.nameEs}
                     </span>
-                    <span className="font-bold text-slate-900">
+                    <span className="font-bold text-ink">
                       {(a.share * 100).toFixed(1)}%
                     </span>
                   </li>
@@ -318,16 +303,16 @@ export function ResultsDashboard({
             </ul>
           </div>
 
-          <div className="rounded-xl border border-slate-200 p-4">
-            <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-700">
-              <Award className="h-4 w-4 text-blue-600" aria-hidden="true" />
+          <div className="rounded-xl border border-line p-4">
+            <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted">
+              <Award className="h-4 w-4 text-accent" aria-hidden="true" />
               Materias que más contribuyeron al perfil de computación
             </h3>
             <ul className="mt-2.5 space-y-1.5 text-xs">
               {mainSubjects.map((s) => (
-                <li key={s.id} className="flex items-center justify-between gap-2 text-slate-700">
-                  <span className="truncate font-medium text-slate-900">{s.name}</span>
-                  <span className="shrink-0 font-bold text-slate-900">
+                <li key={s.id} className="flex items-center justify-between gap-2 text-muted">
+                  <span className="truncate font-medium text-ink">{s.name}</span>
+                  <span className="shrink-0 font-bold text-ink">
                     {(s.share * 100).toFixed(1)}%
                   </span>
                 </li>
@@ -337,19 +322,19 @@ export function ResultsDashboard({
         </div>
 
         {/* Evaluación de respaldo documental (Sección 11 del prompt) */}
-        <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <div className="mt-6 rounded-xl border border-line bg-canvas p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-ink">
               Calidad y respaldo documental de este análisis: {CONFIDENCE_LABELS[result.confidence.level]}
             </h3>
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-muted">
               Criterios cumplidos: {result.confidence.points} de {result.confidence.maxPoints}
             </span>
           </div>
 
           {result.confidence.onlyNames && (
-            <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-950">
-              <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 mt-0.5" aria-hidden="true" />
+            <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-line bg-tint p-3 text-xs text-warning">
+              <AlertTriangle className="h-4 w-4 shrink-0 text-warning mt-0.5" aria-hidden="true" />
               <p>
                 Este análisis es aproximado porque no contamos con los temarios completos. Puedes obtener un resultado más detallado si agregas información sobre las asignaturas.
               </p>
@@ -360,21 +345,26 @@ export function ResultsDashboard({
             {result.confidence.factors.map((f) => (
               <div
                 key={f.label}
-                className="flex items-center justify-between rounded-lg border border-slate-200/80 bg-white px-3 py-2 text-xs"
+                className="flex items-center justify-between rounded-lg border border-line/80 bg-surface px-3 py-2 text-xs"
               >
-                <span className="text-slate-600">{f.label}:</span>
-                <span className={`font-semibold ${f.ok ? "text-emerald-700" : "text-amber-700"}`}>
+                <span className="text-muted">{f.label}:</span>
+                <span className={`font-semibold ${f.ok ? "text-success" : "text-warning"}`}>
                   {f.value}
                 </span>
               </div>
             ))}
           </div>
         </div>
+        </details>
       </section>
 
+      </div>
+      <div className={view === "Categorías" ? "space-y-5" : "hidden print:block"}>
       {/* SECCIÓN B: Gráfica principal de barras horizontales */}
       <CategoryBarChart categories={result.categories} />
 
+      </div>
+      <div className={view === "Disciplinas" ? "space-y-5" : "hidden print:block"}>
       {/* SECCIÓN C: Gráfica radar + Semejanza con perfiles oficiales del CC2020 */}
       <div className="grid gap-6 lg:grid-cols-2">
         <CategoryRadarChart
@@ -386,16 +376,16 @@ export function ResultsDashboard({
         {/* Panel de semejanza con las 6 disciplinas oficiales */}
         <section
           aria-labelledby="heading-similarity"
-          className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-xs"
+          className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-6 shadow-xs"
         >
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
               Comparación con la Tabla 5.3 del CC2020
             </span>
-            <h2 id="heading-similarity" className="mt-1 text-xl font-bold text-slate-900">
+            <h2 id="heading-similarity" className="mt-1 text-xl font-bold text-ink">
               Semejanza con las 6 disciplinas de referencia
             </h2>
-            <p className="mt-1 text-xs text-slate-600">
+            <p className="mt-1 text-xs text-muted">
               Comparamos el perfil de tu carrera contra el punto medio de los rangos de importancia de la Tabla 5.3 mediante similitud coseno.{" "}
               <strong>Es un índice de semejanza (0 a 100) calculado por la plataforma, no un porcentaje de pertenencia oficial.</strong>
             </p>
@@ -408,32 +398,32 @@ export function ResultsDashboard({
                     key={sim.discipline}
                     className={`rounded-xl border p-3.5 transition-colors ${
                       idx === 0
-                        ? "border-blue-300 bg-blue-50/40"
-                        : "border-slate-200 bg-slate-50/40"
+                        ? "border-line bg-tint/40"
+                        : "border-line bg-canvas/40"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div>
-                        <span className="text-sm font-bold text-slate-900">
+                        <span className="text-sm font-bold text-ink">
                           {d.nameEs}{" "}
-                          <span className="text-xs font-normal text-slate-500">
+                          <span className="text-xs font-normal text-muted">
                             ({d.nameEn} · {d.id})
                           </span>
                         </span>
                       </div>
-                      <span className="shrink-0 rounded-lg bg-slate-900 px-2.5 py-1 text-xs font-bold text-white">
+                      <span className="shrink-0 rounded-lg bg-strong px-2.5 py-1 text-xs font-bold text-white">
                         Índice: {sim.index}/100
                       </span>
                     </div>
 
-                    <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                    <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-raised">
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${sim.index}%`, backgroundColor: d.color }}
                       />
                     </div>
 
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
+                    <p className="mt-2 text-xs text-muted leading-relaxed">
                       {explainSimilarity(result, sim.discipline)}
                     </p>
                   </li>
@@ -442,8 +432,8 @@ export function ResultsDashboard({
             </ul>
           </div>
 
-          <div className="mt-4 flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-            <Info className="h-4 w-4 shrink-0 text-slate-500 mt-0.5" aria-hidden="true" />
+          <div className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-canvas p-3 text-xs text-muted">
+            <Info className="h-4 w-4 shrink-0 text-muted mt-0.5" aria-hidden="true" />
             <span>
               En México y Latinoamérica muchas carreras combinan elementos de varias disciplinas del CC2020 (por ejemplo, Sistemas Computacionales suele mezclar Ciencias de la Computación, Ingeniería de Software y Tecnologías de la Información).
             </span>
@@ -451,6 +441,8 @@ export function ResultsDashboard({
         </section>
       </div>
 
+      </div>
+      <div className={view === "Mapa" ? "space-y-5" : "hidden print:block"}>
       {/* SECCIÓN D: Mapa curricular bidimensional */}
       <CurriculumMap2D
         careerName={stored.curriculum.careerName}
@@ -458,6 +450,8 @@ export function ResultsDashboard({
         careerShares={sharesRecord}
       />
 
+      </div>
+      <div className={view === "Materias" ? "space-y-5" : "hidden print:block"}>
       {/* SECCIÓN E: Materias que explican el resultado */}
       <TraceabilitySection
         curriculum={stored.curriculum}
@@ -469,13 +463,13 @@ export function ResultsDashboard({
       {/* Limitaciones del análisis */}
       <section
         aria-labelledby="heading-limitations"
-        className="rounded-2xl border border-slate-200 bg-slate-100/80 p-6 text-xs text-slate-700"
+        className="rounded-2xl border border-line bg-raised/80 p-6 text-xs text-muted"
       >
         <h2
           id="heading-limitations"
-          className="flex items-center gap-2 text-sm font-bold text-slate-900"
+          className="flex items-center gap-2 text-sm font-bold text-ink"
         >
-          <ShieldAlert className="h-4 w-4 text-slate-700" aria-hidden="true" />
+          <ShieldAlert className="h-4 w-4 text-muted" aria-hidden="true" />
           Alcance y limitaciones de este análisis
         </h2>
         <ul className="mt-2.5 grid gap-2 sm:grid-cols-2 list-disc pl-5 leading-relaxed">
@@ -493,6 +487,7 @@ export function ResultsDashboard({
           </li>
         </ul>
       </section>
+      </div>
     </div>
   );
 }

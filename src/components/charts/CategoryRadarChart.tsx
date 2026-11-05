@@ -47,27 +47,27 @@ export function CategoryRadarChart({
   });
 
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-xs">
+    <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-6 shadow-xs">
       <div>
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">
               Forma del perfil curricular
             </span>
-            <h2 className="mt-1 text-xl font-bold text-slate-900">
+            <h2 className="mt-1 text-xl font-bold text-ink">
               Gráfica radar de las 6 categorías
             </h2>
           </div>
 
           <div>
-            <label htmlFor="radar-overlay" className="block text-[11px] font-semibold text-slate-600">
+            <label htmlFor="radar-overlay" className="block text-[11px] font-semibold text-muted">
               Comparar silueta con disciplina CC2020:
             </label>
             <select
               id="radar-overlay"
               value={overlayDiscipline}
               onChange={(e) => setOverlayDiscipline(e.target.value as DisciplineId | "none")}
-              className="mt-1 rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-800 focus:border-blue-600 focus:outline-none"
+              className="mt-1 rounded-lg border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-ink focus:border-accent focus:outline-none"
             >
               <option value="none">Sin comparación (solo mi carrera)</option>
               {DISCIPLINES.map((d) => (
@@ -82,16 +82,16 @@ export function CategoryRadarChart({
         <div className="mt-4 h-72 w-full" aria-label="Gráfica radar con seis ejes correspondientes a las seis categorías del CC2020">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart cx="50%" cy="50%" outerRadius="72%" data={radarData}>
-              <PolarGrid stroke="#cbd5e1" />
+              <PolarGrid stroke="#586574" />
               <PolarAngleAxis
                 dataKey="subject"
-                tick={{ fill: "#1e293b", fontSize: 11, fontWeight: 600 }}
+                tick={{ fill: "#586574", fontSize: 11, fontWeight: 600 }}
               />
               <PolarRadiusAxis
                 angle={30}
                 domain={[0, "auto"]}
                 tickFormatter={(v) => `${v}%`}
-                tick={{ fill: "#64748b", fontSize: 10 }}
+                tick={{ fill: "#a2adbd", fontSize: 10 }}
               />
               <Radar
                 name={careerName || "Carrera analizada"}
@@ -116,7 +116,7 @@ export function CategoryRadarChart({
                 formatter={(value) => [`${value}%`, "Proporción"]}
                 contentStyle={{
                   borderRadius: "12px",
-                  borderColor: "#e2e8f0",
+                  borderColor: "#384250", backgroundColor: "#1d222b", color: "#f5f6f8",
                   fontSize: "12px",
                 }}
               />
@@ -127,9 +127,9 @@ export function CategoryRadarChart({
       </div>
 
       {/* Explicación educativa para interpretar la gráfica */}
-      <div className="mt-4 rounded-xl border border-blue-100 bg-blue-50/60 p-3.5 text-xs text-slate-700">
-        <p className="flex items-center gap-1.5 font-bold text-blue-950">
-          <HelpCircle className="h-4 w-4 text-blue-600 shrink-0" aria-hidden="true" />
+      <div className="mt-4 rounded-xl border border-line bg-tint/60 p-3.5 text-xs text-muted">
+        <p className="flex items-center gap-1.5 font-bold text-accent">
+          <HelpCircle className="h-4 w-4 text-accent shrink-0" aria-hidden="true" />
           ¿Cómo interpretar esta gráfica?
         </p>
         <p className="mt-1 leading-relaxed">

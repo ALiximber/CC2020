@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -26,6 +26,10 @@ import type { StoredAnalysis } from "@/types";
 
 const PALETTE = ["#2563eb", "#059669", "#d97706", "#7c3aed", "#dc2626"];
 
+import { ViewSelector } from "@/components/layout/ViewSelector";
+
+const views = ["Categorías", "Ejes", "Disciplinas", "Mapa"] as const;
+
 interface ComparisonViewProps {
   analyses: StoredAnalysis[];
   hasDemo: boolean;
@@ -45,6 +49,7 @@ export function ComparisonView({
   onRemoveCareer,
   onBackToResults,
 }: ComparisonViewProps) {
+  const [view, setView] = useState<(typeof views)[number]>(views[0]);
   const computed = useMemo(
     () =>
       analyses.map((a, idx) => ({
@@ -85,7 +90,7 @@ export function ComparisonView({
         <button
           type="button"
           onClick={onBackToResults}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-ink"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Volver al análisis individual
@@ -96,16 +101,16 @@ export function ComparisonView({
             <button
               type="button"
               onClick={onAddDemoCareer}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50 px-3.5 py-2 text-xs font-semibold text-indigo-800 hover:bg-indigo-100"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-tint px-3.5 py-2 text-xs font-semibold text-accent hover:bg-tint"
             >
-              <Sparkles className="h-3.5 w-3.5 text-indigo-600" aria-hidden="true" />
+              <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
               Agregar carrera de demostración
             </button>
           )}
           <button
             type="button"
             onClick={onAddAnotherCareer}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-blue-700"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-action px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-xs hover:bg-action"
           >
             <PlusCircle className="h-4 w-4" aria-hidden="true" />
             Analizar otra retícula
@@ -113,15 +118,12 @@ export function ComparisonView({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs sm:p-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
-          Comparador de planes de estudio
-        </span>
-        <h1 className="mt-1 text-2xl font-extrabold text-slate-900 sm:text-3xl">
+      <div className="rounded-2xl border border-line bg-surface p-6 shadow-xs sm:p-8">
+        <h1 className="mt-1 text-2xl font-extrabold text-ink sm:text-3xl">
           Comparación entre carreras
         </h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Compara cómo distribuyen su tiempo distintas carreras de computación. Recuerda: que una carrera dedique mayor proporción a un área indica un <strong>enfoque distinto</strong>, no una mayor ni menor calidad educativa.
+        <p className="mt-1 text-sm text-muted">
+          Explora la distribución del contenido de computación en cada plan.
         </p>
 
         {/* Tarjetas de las carreras incluidas */}
@@ -129,7 +131,7 @@ export function ComparisonView({
           {computed.map((c) => (
             <div
               key={c.stored.id}
-              className="flex items-start justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50/70 p-4"
+              className="flex items-start justify-between gap-2 rounded-xl border border-line bg-canvas/70 p-4"
             >
               <div>
                 <div className="flex items-center gap-2">
@@ -138,16 +140,16 @@ export function ComparisonView({
                     style={{ backgroundColor: c.color }}
                     aria-hidden="true"
                   />
-                  <h2 className="text-sm font-bold text-slate-900">{c.label}</h2>
+                  <h2 className="text-sm font-bold text-ink">{c.label}</h2>
                 </div>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-muted">
                   {c.stored.curriculum.university || "Universidad no especificada"} ·{" "}
                   {c.stored.curriculum.subjects.length} materias
                 </p>
                 <button
                   type="button"
                   onClick={() => onSelectCareerResult(c.stored.id)}
-                  className="mt-2 text-xs font-semibold text-blue-700 hover:underline"
+                  className="mt-2 text-xs font-semibold text-accent hover:underline"
                 >
                   Ver análisis individual →
                 </button>
@@ -157,7 +159,7 @@ export function ComparisonView({
                   type="button"
                   onClick={() => onRemoveCareer(c.stored.id)}
                   aria-label={`Quitar ${c.label} de la comparación`}
-                  className="rounded-lg p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-600"
+                  className="rounded-lg p-1.5 text-muted hover:bg-tint hover:text-danger"
                 >
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
                 </button>
@@ -167,18 +169,18 @@ export function ComparisonView({
         </div>
 
         {computed.length < 2 ? (
-          <div className="mt-6 rounded-2xl border-2 border-dashed border-blue-200 bg-blue-50/50 p-8 text-center">
-            <h2 className="text-lg font-bold text-slate-900">
+          <div className="mt-6 rounded-2xl border-2 border-dashed border-line bg-tint/50 p-8 text-center">
+            <h2 className="text-lg font-bold text-ink">
               Agrega una segunda carrera para compararlas lado a lado
             </h2>
-            <p className="mt-1 text-sm text-slate-600 max-w-xl mx-auto">
+            <p className="mt-1 text-sm text-muted max-w-xl mx-auto">
               Actualmente tienes 1 carrera analizada en esta sesión. Sube otro plan de estudios o agrega la carrera de demostración para ver las gráficas comparativas.
             </p>
             <div className="mt-5 flex flex-wrap justify-center gap-3">
               <button
                 type="button"
                 onClick={onAddAnotherCareer}
-                className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
+                className="inline-flex items-center gap-2 rounded-xl bg-action px-5 py-2.5 text-sm font-semibold text-white hover:bg-action"
               >
                 <PlusCircle className="h-4 w-4" aria-hidden="true" />
                 Subir otra retícula
@@ -187,9 +189,9 @@ export function ComparisonView({
                 <button
                   type="button"
                   onClick={onAddDemoCareer}
-                  className="inline-flex items-center gap-2 rounded-xl border border-indigo-200 bg-white px-5 py-2.5 text-sm font-semibold text-indigo-800 hover:bg-indigo-50"
+                  className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface px-5 py-2.5 text-sm font-semibold text-accent hover:bg-tint"
                 >
-                  <Sparkles className="h-4 w-4 text-indigo-600" aria-hidden="true" />
+                  <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
                   Comparar contra la carrera DEMO
                 </button>
               )}
@@ -198,26 +200,28 @@ export function ComparisonView({
         ) : (
           <>
             {/* Conclusiones comparativas deterministas */}
-            <div className="mt-6 rounded-xl border border-blue-100 bg-blue-50/70 p-5">
-              <h2 className="text-sm font-bold text-blue-950">
+            <div className="mt-6 rounded-xl border border-line bg-tint/70 p-5">
+              <h2 className="text-sm font-bold text-accent">
                 Principales diferencias de enfoque detectadas
               </h2>
-              <ul className="mt-2.5 space-y-1.5 list-disc pl-5 text-xs sm:text-sm text-slate-800 leading-relaxed">
+              <ul className="mt-2.5 space-y-1.5 list-disc pl-5 text-xs sm:text-sm text-ink leading-relaxed">
                 {statements.map((st, i) => (
                   <li key={i}>{st}</li>
                 ))}
               </ul>
-              <p className="mt-3 flex items-center gap-1.5 text-xs text-slate-600">
-                <Info className="h-4 w-4 shrink-0 text-blue-600" aria-hidden="true" />
+              <p className="mt-3 flex items-center gap-1.5 text-xs text-muted">
+                <Info className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                 <span>
                   Estas comparaciones se calculan únicamente con las proporciones de cada plan y muestran diferencias de orientación académica, no de calidad.
                 </span>
               </p>
             </div>
 
+<ViewSelector label="Vistas del análisis" options={views} value={view} onChange={setView} />
+            {view === "Categorías" && <>
             {/* Gráfica comparativa de las 6 categorías */}
             <div className="mt-8">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-ink">
                 1. Distribución de conocimientos por categoría CC2020
               </h2>
               <div className="mt-4 h-80 w-full">
@@ -226,11 +230,11 @@ export function ComparisonView({
                     data={categoryChartData}
                     margin={{ top: 10, right: 20, left: 0, bottom: 20 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis dataKey="category" stroke="#334155" fontSize={11} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#384250" />
+                    <XAxis dataKey="category" stroke="#cad4e1" fontSize={11} />
                     <YAxis
                       unit="%"
-                      stroke="#64748b"
+                      stroke="#a2adbd"
                       fontSize={11}
                       domain={[0, "auto"]}
                     />
@@ -253,15 +257,17 @@ export function ComparisonView({
               </div>
             </div>
 
+            </>}
+            {view === "Ejes" && <>
             {/* Tabla comparativa de los 5 ejes de orientación */}
             <div className="mt-8">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-ink">
                 2. Comparación por ejes de orientación
               </h2>
-              <div className="mt-3 overflow-x-auto rounded-xl border border-slate-200">
+              <div className="mt-3 overflow-x-auto rounded-xl border border-line">
                 <table className="w-full text-left text-xs sm:text-sm border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-slate-700">
+                    <tr className="border-b border-line bg-canvas text-muted">
                       <th className="p-3 font-bold">Dimensión académica</th>
                       {computed.map((c) => (
                         <th key={c.stored.id} className="p-3 font-bold">
@@ -277,17 +283,17 @@ export function ComparisonView({
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200">
+                  <tbody className="divide-y divide-line">
                     {COMPARISON_DIMENSIONS.map((dim) => (
-                      <tr key={dim.id} className="hover:bg-slate-50/70">
-                        <td className="p-3 font-medium text-slate-900">{dim.label}</td>
+                      <tr key={dim.id} className="hover:bg-canvas/70">
+                        <td className="p-3 font-medium text-ink">{dim.label}</td>
                         {computed.map((c) => {
                           const pct = Math.round(dimensionValue(c.result, dim.categories) * 100);
                           return (
                             <td key={c.stored.id} className="p-3">
                               <div className="flex items-center gap-2">
-                                <span className="w-10 font-bold text-slate-900">{pct}%</span>
-                                <div className="h-2 flex-1 max-w-32 overflow-hidden rounded-full bg-slate-100">
+                                <span className="w-10 font-bold text-ink">{pct}%</span>
+                                <div className="h-2 flex-1 max-w-32 overflow-hidden rounded-full bg-raised">
                                   <div
                                     className="h-full rounded-full"
                                     style={{ width: `${pct}%`, backgroundColor: c.color }}
@@ -304,15 +310,17 @@ export function ComparisonView({
               </div>
             </div>
 
+            </>}
+            {view === "Disciplinas" && <>
             {/* Tabla comparativa de semejanza con las 6 disciplinas del CC2020 */}
             <div className="mt-8">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-ink">
                 3. Semejanza con las disciplinas del CC2020 (índice 0–100 calculado)
               </h2>
-              <div className="mt-3 overflow-x-auto rounded-xl border border-slate-200">
+              <div className="mt-3 overflow-x-auto rounded-xl border border-line">
                 <table className="w-full text-left text-xs sm:text-sm border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-slate-700">
+                    <tr className="border-b border-line bg-canvas text-muted">
                       <th className="p-3 font-bold">Disciplina de referencia CC2020</th>
                       {computed.map((c) => (
                         <th key={c.stored.id} className="p-3 font-bold">
@@ -321,17 +329,17 @@ export function ComparisonView({
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200">
+                  <tbody className="divide-y divide-line">
                     {DISCIPLINES.map((d) => (
-                      <tr key={d.id} className="hover:bg-slate-50/70">
-                        <td className="p-3 font-medium text-slate-900">
+                      <tr key={d.id} className="hover:bg-canvas/70">
+                        <td className="p-3 font-medium text-ink">
                           {d.nameEs}{" "}
-                          <span className="text-xs text-slate-500">({d.id})</span>
+                          <span className="text-xs text-muted">({d.id})</span>
                         </td>
                         {computed.map((c) => {
                           const sim = c.result.similarities.find((s) => s.discipline === d.id);
                           return (
-                            <td key={c.stored.id} className="p-3 font-semibold text-slate-900">
+                            <td key={c.stored.id} className="p-3 font-semibold text-ink">
                               {sim ? `${sim.index}/100` : "-"}
                             </td>
                           );
@@ -342,12 +350,13 @@ export function ComparisonView({
                 </table>
               </div>
             </div>
+            </>}
           </>
         )}
       </div>
 
       {/* Mapa bidimensional conjunto si hay 2 o más carreras */}
-      {computed.length >= 2 && (
+      {computed.length >= 2 && view === "Mapa" && (
         <CurriculumMap2D
           careerName={computed[0].label}
           careerPoint={computed[0].result.mapPoint}

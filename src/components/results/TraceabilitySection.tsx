@@ -59,17 +59,17 @@ export function TraceabilitySection({
   return (
     <section
       aria-labelledby="heading-traceability"
-      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs sm:p-8"
+      className="rounded-2xl border border-line bg-surface p-6 shadow-xs sm:p-8"
     >
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
+          <span className="text-xs font-bold uppercase tracking-wider text-accent">
             Transparencia y trazabilidad académica
           </span>
-          <h2 id="heading-traceability" className="mt-1 text-xl font-bold text-slate-900 sm:text-2xl">
+          <h2 id="heading-traceability" className="mt-1 text-xl font-bold text-ink sm:text-2xl">
             ¿Por qué obtuvimos estos resultados?
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-muted">
             Aquí puedes consultar cada materia de tu retícula, con qué áreas del CC2020 se relacionó y la razón de esa clasificación.
           </p>
         </div>
@@ -78,7 +78,7 @@ export function TraceabilitySection({
           <button
             type="button"
             onClick={onEditSubjects}
-            className="self-start sm:self-auto rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 print:hidden"
+            className="self-start sm:self-auto rounded-xl border border-line bg-canvas px-3.5 py-2 text-xs font-semibold text-muted hover:bg-raised print:hidden"
           >
             Editar materias o agregar temarios
           </button>
@@ -93,8 +93,8 @@ export function TraceabilitySection({
             onClick={() => setSelectedCategory("ALL")}
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
               selectedCategory === "ALL"
-                ? "bg-blue-600 text-white"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                ? "bg-action text-white"
+                : "bg-raised text-muted hover:bg-raised"
             }`}
           >
             Todas ({curriculum.subjects.length})
@@ -108,8 +108,8 @@ export function TraceabilitySection({
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                   selectedCategory === cat.id
-                    ? "bg-slate-900 text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    ? "bg-strong text-white"
+                    : "bg-raised text-muted hover:bg-raised"
                 }`}
               >
                 <span
@@ -127,8 +127,8 @@ export function TraceabilitySection({
               onClick={() => setSelectedCategory("UNCLASSIFIED")}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                 selectedCategory === "UNCLASSIFIED"
-                  ? "bg-slate-800 text-white"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  ? "bg-strong text-white"
+                  : "bg-raised text-muted hover:bg-raised"
               }`}
             >
               Otras ciencias / formación general ({result.unclassifiedSubjects.length})
@@ -138,7 +138,7 @@ export function TraceabilitySection({
 
         <div className="relative w-full md:w-64">
           <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
             aria-hidden="true"
           />
           <input
@@ -147,7 +147,7 @@ export function TraceabilitySection({
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar materia..."
             aria-label="Buscar materia por nombre"
-            className="w-full rounded-xl border border-slate-300 py-1.5 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none"
+            className="w-full rounded-xl border border-line py-1.5 pl-9 pr-3 text-xs text-ink placeholder:text-muted focus:border-accent focus:outline-none"
           />
         </div>
       </div>
@@ -157,13 +157,13 @@ export function TraceabilitySection({
         {filtered.map(({ subject, assignments, uncertain, note }) => (
           <div
             key={subject.id}
-            className="flex flex-col justify-between rounded-xl border border-slate-200 bg-slate-50/50 p-4"
+            className="flex flex-col justify-between rounded-xl border border-line bg-canvas/50 p-4"
           >
             <div>
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">{subject.name}</h3>
-                  <p className="text-[11px] text-slate-500">
+                  <h3 className="text-sm font-bold text-ink">{subject.name}</h3>
+                  <p className="text-[11px] text-muted">
                     {subject.semester ? `Semestre ${subject.semester}` : "Semestre no indicado"}
                     {subject.credits ? ` · ${subject.credits} créditos` : ""}
                     {subject.hours ? ` · ${subject.hours} horas` : ""}
@@ -172,7 +172,7 @@ export function TraceabilitySection({
                 {uncertain && (
                   <span
                     title={note || "Clasificación aproximada por falta de temario"}
-                    className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900"
+                    className="inline-flex shrink-0 items-center gap-1 rounded-full bg-tint px-2 py-0.5 text-[11px] font-semibold text-warning"
                   >
                     <HelpCircle className="h-3 w-3" aria-hidden="true" />
                     Aproximada
@@ -181,8 +181,8 @@ export function TraceabilitySection({
               </div>
 
               {subject.description && (
-                <p className="mt-2 rounded-lg bg-white p-2 text-xs text-slate-600 border border-slate-200/70">
-                  <strong className="text-slate-700">Temario:</strong> {subject.description}
+                <p className="mt-2 rounded-lg bg-surface p-2 text-xs text-muted border border-line/70">
+                  <strong className="text-muted">Temario:</strong> {subject.description}
                 </p>
               )}
 
@@ -194,10 +194,10 @@ export function TraceabilitySection({
                     return (
                       <li
                         key={a.areaId}
-                        className="rounded-lg border border-slate-200/90 bg-white p-2.5 text-xs"
+                        className="rounded-lg border border-line/90 bg-surface p-2.5 text-xs"
                       >
                         <div className="flex flex-wrap items-center justify-between gap-1">
-                          <span className="inline-flex items-center gap-1.5 font-semibold text-slate-900">
+                          <span className="inline-flex items-center gap-1.5 font-semibold text-ink">
                             {cat && (
                               <span
                                 className="h-2.5 w-2.5 rounded-full shrink-0"
@@ -209,17 +209,17 @@ export function TraceabilitySection({
                               {a.areaId} {area?.nameEs ?? a.areaId}
                             </span>
                           </span>
-                          <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-slate-700">
+                          <span className="rounded bg-raised px-1.5 py-0.5 font-mono text-[11px] font-semibold text-muted">
                             Relevancia: {Math.round(a.relevance * 100)}%
                           </span>
                         </div>
                         {cat && (
-                          <p className="mt-0.5 text-[11px] text-slate-500">
+                          <p className="mt-0.5 text-[11px] text-muted">
                             Categoría: {cat.nameEs} ({area?.nameEn})
                           </p>
                         )}
                         {a.justification && (
-                          <p className="mt-1 text-slate-700 leading-relaxed">
+                          <p className="mt-1 text-muted leading-relaxed">
                             {a.justification}
                           </p>
                         )}
@@ -228,8 +228,8 @@ export function TraceabilitySection({
                   })}
                 </ul>
               ) : (
-                <div className="mt-3 flex items-start gap-2 rounded-lg border border-slate-200 bg-white p-2.5 text-xs text-slate-600">
-                  <BookOpen className="h-4 w-4 shrink-0 text-slate-400 mt-0.5" aria-hidden="true" />
+                <div className="mt-3 flex items-start gap-2 rounded-lg border border-line bg-surface p-2.5 text-xs text-muted">
+                  <BookOpen className="h-4 w-4 shrink-0 text-muted mt-0.5" aria-hidden="true" />
                   <span>
                     Materia de ciencias básicas, matemáticas generales, idiomas o formación transversal. Es parte importante de tu formación universitaria, aunque no se clasifica dentro de las 34 áreas específicas de computación del CC2020.
                   </span>
@@ -238,8 +238,8 @@ export function TraceabilitySection({
             </div>
 
             {uncertain && note && (
-              <p className="mt-2.5 flex items-start gap-1.5 border-t border-amber-200/70 pt-2 text-[11px] text-amber-900">
-                <AlertCircle className="h-3.5 w-3.5 shrink-0 text-amber-600 mt-0.5" aria-hidden="true" />
+              <p className="mt-2.5 flex items-start gap-1.5 border-t border-line/70 pt-2 text-[11px] text-warning">
+                <AlertCircle className="h-3.5 w-3.5 shrink-0 text-warning mt-0.5" aria-hidden="true" />
                 <span>Nota sobre esta materia: {note}</span>
               </p>
             )}
