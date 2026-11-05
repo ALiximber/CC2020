@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
   throw new Error("El cliente de Gemini solo puede usarse en el servidor.");
 }
 
-export const DEFAULT_MODEL = "gemini-2.5-flash";
+export const DEFAULT_MODEL = "gemini-3.8-flash";
 export const DEFAULT_FALLBACK_MODEL = "gemini-flash-latest";
 
 let cached: GoogleGenAI | null = null;
@@ -69,4 +69,3 @@ export function toAppError(err: unknown): AppError {
   }
   return new AppError("UNKNOWN", String(err));
 }
-

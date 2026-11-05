@@ -74,7 +74,7 @@ npm install
 3. Abre `.env.local` en tu editor de texto y pega tu clave:
    ```env
    GEMINI_API_KEY=TU_CLAVE_AQUI
-   GEMINI_MODEL=gemini-2.5-flash
+   GEMINI_MODEL=gemini-3.8-flash
    GEMINI_FALLBACK_MODEL=gemini-flash-latest
    ```
    > **Seguridad:** La variable `GEMINI_API_KEY` **no** lleva el prefijo `NEXT_PUBLIC_`, por lo que se usa exclusivamente en el servidor de Next.js y nunca se expone en el navegador. Además, `.gitignore` impide que `.env.local` se suba a GitHub.
@@ -127,7 +127,7 @@ Antes de desplegar (o desde **Settings → Environment Variables** del proyecto 
 | Nombre | Valor |
 | :--- | :--- |
 | `GEMINI_API_KEY` | Tu clave de Google AI Studio |
-| `GEMINI_MODEL` | `gemini-2.5-flash` |
+| `GEMINI_MODEL` | `gemini-3.8-flash` |
 | `GEMINI_FALLBACK_MODEL` | `gemini-flash-latest` |
 
 ### 10. Publicar la aplicación
