@@ -14,6 +14,7 @@ import {
 import { newId } from "@/lib/analysis/manual-parse";
 import { chooseWeighting, WEIGHTING_LABELS } from "@/lib/analysis/weighting";
 import type { Curriculum, Subject } from "@/types";
+import { ProgramEditor } from "@/components/sustainability/ProgramEditor";
 
 interface ReviewStepProps {
   initialCurriculum: Curriculum;
@@ -91,6 +92,11 @@ export function ReviewStep({
 
     if (cleaned.length < 2) {
       setLocalError("Agrega al menos 2 materias con nombre antes de iniciar el análisis.");
+      return;
+    }
+
+    if (cleaned.some(s => s.officialProgram && (!s.officialProgram.text.trim() || !s.officialProgram.reference.trim()))) {
+      setLocalError("Completa el texto y la fuente de cada programa oficial, o quita la evidencia vacía.");
       return;
     }
 
@@ -344,10 +350,12 @@ export function ReviewStep({
                             id={`desc-${s.id}`}
                             rows={2}
                             value={s.description}
+                            maxLength={2500}
                             onChange={(e) => updateSubject(s.id, { description: e.target.value })}
                             placeholder="Ej. Diseño de bases de datos relacionales, lenguaje SQL, normalización y transacciones."
                             className="mt-1 w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-xs text-ink focus:border-accent focus:outline-none"
                           />
+                          <ProgramEditor subject={s} onChange={patch => updateSubject(s.id, patch)} />
                         </div>
                       )}
                     </div>

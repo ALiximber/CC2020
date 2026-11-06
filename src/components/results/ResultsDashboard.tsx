@@ -42,10 +42,13 @@ import { TraceabilitySection } from "@/components/results/TraceabilitySection";
 import type { StoredAnalysis } from "@/types";
 
 import { ViewSelector } from "@/components/layout/ViewSelector";
+import { SustainabilityPanel } from "@/components/sustainability/SustainabilityPanel";
+import type { SustainabilityState } from "@/lib/sustainability/schema";
 
-const views = ["Resumen", "Categorías", "Disciplinas", "Mapa", "Materias"] as const;
+const views = ["Resumen", "Categorías", "Disciplinas", "Mapa", "Materias", "Sustentabilidad"] as const;
 
 interface ResultsDashboardProps {
+  onSaveSustainability: (state: SustainabilityState) => void;
   stored: StoredAnalysis;
   allAnalyses: StoredAnalysis[];
   onSelectAnalysis: (id: string) => void;
@@ -56,6 +59,7 @@ interface ResultsDashboardProps {
 }
 
 export function ResultsDashboard({
+  onSaveSustainability,
   stored,
   allAnalyses,
   onSelectAnalysis,
@@ -204,6 +208,9 @@ export function ResultsDashboard({
       </div>
 
       <ViewSelector label="Vistas del análisis" options={views} value={view} onChange={setView} />
+      <div className={view === "Sustentabilidad" ? "space-y-5" : "hidden print:block"}>
+        <SustainabilityPanel key={stored.id + stored.createdAt} stored={stored} onSave={onSaveSustainability} />
+      </div>
       <div className={view === "Resumen" ? "space-y-5" : "hidden print:block"}>
       {/* SECCIÓN A: Resumen general ("Así es tu carrera") + Calidad del análisis */}
       <section

@@ -43,6 +43,7 @@ export function downloadAnalysisJson(stored: StoredAnalysis, result: AnalysisRes
       note: "Los porcentajes por categoría, índices de semejanza y coordenadas del mapa 2D son cálculos propios de la plataforma basados en las tablas 4.1 y 5.3 del CC2020.",
     },
     curriculum: stored.curriculum,
+    sustainability: stored.sustainability,
     classifications: stored.classifications,
     results: {
       weightingMethod: result.weighting,

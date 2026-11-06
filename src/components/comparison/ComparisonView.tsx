@@ -27,8 +27,9 @@ import type { StoredAnalysis } from "@/types";
 const PALETTE = ["#2563eb", "#059669", "#d97706", "#7c3aed", "#dc2626"];
 
 import { ViewSelector } from "@/components/layout/ViewSelector";
+import { SustainabilityComparison } from "@/components/sustainability/SustainabilityComparison";
 
-const views = ["Categorías", "Ejes", "Disciplinas", "Mapa"] as const;
+const views = ["Categorías", "Ejes", "Disciplinas", "Mapa", "Sustentabilidad"] as const;
 
 interface ComparisonViewProps {
   analyses: StoredAnalysis[];
@@ -218,6 +219,7 @@ export function ComparisonView({
             </div>
 
 <ViewSelector label="Vistas del análisis" options={views} value={view} onChange={setView} />
+      {view === "Sustentabilidad" && <SustainabilityComparison analyses={analyses} />}
             {view === "Categorías" && <>
             {/* Gráfica comparativa de las 6 categorías */}
             <div className="mt-8">

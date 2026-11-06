@@ -63,6 +63,10 @@ export function useSessionAnalyses() {
     return demo;
   }, [upsertAnalysis]);
 
+  const saveSustainability = useCallback((id: string, createdAt: string, sustainability: StoredAnalysis["sustainability"]) => {
+    setAnalyses(prev => prev.map(a => a.id === id && a.createdAt === createdAt ? { ...a, sustainability } : a));
+  }, []);
+
   const removeAnalysis = useCallback((id: string) => {
     setAnalyses((prev) => {
       const next = prev.filter((a) => a.id !== id);
@@ -92,6 +96,7 @@ export function useSessionAnalyses() {
     activeId,
     setActiveId,
     upsertAnalysis,
+    saveSustainability,
     loadDemo,
     hasDemo,
     removeAnalysis,

@@ -186,3 +186,7 @@ src/
 
 - **CC2020 Task Force.** (2020). *Computing Curricula 2020: Paradigms for Global Computing Education*. ACM / IEEE Computer Society. Documento oficial: [https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf](https://www.acm.org/binaries/content/assets/education/curricula-recommendations/cc2020.pdf)
 
+# Dimensión de sustentabilidad
+
+El panel de resultados incluye **Sustentabilidad**, con relaciones ODS, proyectos, actividades y comparación fundamentada en los datos aportados. Consulta [la guía de implementación y pruebas](SUSTENTABILIDAD.md).
+

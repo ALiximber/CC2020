@@ -3,6 +3,7 @@ import type { DisciplineId } from "@/data/cc2020-reference";
 
 /** Materia del plan de estudios (extraída o capturada por el usuario). */
 export interface Subject {
+  officialProgram?: { text: string; reference: string; complete: boolean };
   id: string;
   name: string;
   semester: number | null;
@@ -113,6 +114,7 @@ export interface AnalysisResult {
 
 /** Análisis guardado en la sesión del navegador. */
 export interface StoredAnalysis {
+  sustainability?: import("@/lib/sustainability/schema").SustainabilityState;
   id: string;
   createdAt: string;
   isDemo: boolean;

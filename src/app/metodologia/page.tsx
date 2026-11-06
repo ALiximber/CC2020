@@ -321,6 +321,15 @@ export default function MetodologiaPage() {
         </section>
       </main>
 
+      <section className="mx-auto w-full max-w-6xl px-6 pb-8 space-y-3 text-sm">
+        <h2 className="text-xl font-bold">Sustentabilidad: evidencia y aplicaciones potenciales</h2>
+        <p>Este módulo complementario usa las materias y clasificaciones existentes sin modificar los cálculos CC2020. Las relaciones con ODS, proyectos y sectores son propuestas de IA que requieren revisión, no acreditaciones ni mediciones de impacto.</p>
+        <p>Nivel 1: solo nombre, integración explícita no verificable. Nivel 2: descripción aportada. Nivel 3: texto de un programa oficial con fuente declarada por el usuario. Las citas deben coincidir literalmente con el texto disponible; la plataforma no autentica su procedencia. Una descripción no demuestra por sí misma el contenido de un programa oficial.</p>
+        <p>Solo se admite contenido explícito con una cita temática verificable. «No identificado» requiere un programa marcado como completo; no equivale a afirmar que nunca se enseña el tema. Los fragmentos o datos faltantes se tratan como desconocidos. La confianza es una apreciación cualitativa de IA, no una probabilidad calibrada.</p>
+        <p>No calculamos porcentajes de sustentabilidad ni rankings. La comparación muestra aplicaciones, sectores y evidencia por materia. Para medir beneficios reales, cada proyecto propone indicadores que deben contrastarse con una línea base, incluyendo costos y efectos negativos del propio sistema.</p>
+        <p>Los análisis se solicitan bajo demanda y se conservan en la sesión. Los lotes completos se reutilizan; editar el plan invalida el análisis complementario. Los programas aportados se guardan como texto en la sesión y se envían a Gemini al solicitar el análisis de sustentabilidad.</p>
+        <p>Referencias: <a className="underline" href="https://www.un.org/sustainabledevelopment/es/sustainable-development-goals/">ODS de Naciones Unidas</a>, <a className="underline" href="https://www.unesco.org/es/sustainable-development/education/need-know">educación para el desarrollo sostenible (UNESCO)</a> y <a className="underline" href="https://learn.greensoftware.foundation/">Green Software Foundation</a>.</p>
+      </section>
       <Footer />
     </div>
   );

@@ -27,6 +27,7 @@ export default function HomePage() {
     activeAnalysis,
     setActiveId,
     upsertAnalysis,
+    saveSustainability,
     loadDemo,
     hasDemo,
     removeAnalysis,
@@ -256,6 +257,7 @@ export default function HomePage() {
 
         {step === "results" && activeAnalysis && (
           <ResultsDashboard
+            onSaveSustainability={(sustainability) => saveSustainability(activeAnalysis.id, activeAnalysis.createdAt, sustainability)}
             stored={activeAnalysis}
             allAnalyses={analyses}
             onSelectAnalysis={(id) => setActiveId(id)}

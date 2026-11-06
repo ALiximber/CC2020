@@ -13,7 +13,7 @@ export class ClientApiError extends Error {
   }
 }
 
-async function postJson<T>(url: string, body: unknown, timeoutMs: number, signal?: AbortSignal): Promise<T> {
+export async function postJson<T>(url: string, body: unknown, timeoutMs: number, signal?: AbortSignal): Promise<T> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   const onAbort = () => controller.abort();
